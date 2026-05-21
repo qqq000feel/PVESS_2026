@@ -3,6 +3,28 @@ import pandas as pd
 import numpy as np
 # import matplotlib.pyplot as plt
 
+
+
+hide_menu_style = """
+    <style>
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    [data-testid="stHeader"] {display: none;}
+    [data-testid="stToolbar"] {display: none;}
+    </style>
+"""
+st.markdown(hide_menu_style, unsafe_allow_html=True)
+
+col_space, col_lang = st.columns([8, 2])
+
+with col_space:
+    st.markdown("서원준 건물에너지 사무소")
+    
+with col_lang:
+    st.markdown("https://swj.kr")
+
+
+
 # 앱 제목 설정
 st.title("시계열 데이터 몬테카를로")
 st.markdown("업로드 데이터에 가우시안 노이즈 적용")
