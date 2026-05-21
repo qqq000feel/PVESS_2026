@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 앱 제목 설정
-st.title("📊 시계열 데이터 몬테카를로 시뮬레이터")
-st.markdown("가우시안 노이즈를 주입하여 다수의 가상 시계열 데이터를 생성합니다.")
+st.title("시계열 데이터 몬테카를로")
+st.markdown("업로드 데이터에 가우시안 노이즈 적용")
 
 # 1. 파일 업로드 (CSV)
 uploaded_file = st.file_uploader("원본 CSV 파일을 업로드하세요 ('Data' 컬럼 필수)", type=['csv'])
@@ -17,12 +17,12 @@ if uploaded_file is not None:
     if 'Data' not in df.columns:
         st.error("⚠️ 업로드한 파일에 'Data' 컬럼이 없습니다. 파일 형식을 확인해주세요.")
     else:
-        st.success("✅ 파일이 성공적으로 업로드되었습니다.")
+        st.success("파일이 성공적으로 업로드되었습니다.")
         base_data = df['Data'].values
         n_time_steps = len(base_data)
 
         st.markdown("---")
-        st.subheader("⚙️ 시뮬레이션 파라미터 설정")
+        st.subheader("파라미터 설정")
         
         # 2 & 3. 사용자 입력 폼 (컬럼으로 나누어 UI 구성)
         col1, col2, col3 = st.columns(3)
@@ -32,11 +32,11 @@ if uploaded_file is not None:
         with col2:
             lower_error = st.number_input("하한 허용 오차 (절대값)", min_value=0.0, value=0.5, step=0.1, help="기준 데이터 - 입력값")
         with col3:
-            n_simulations = st.number_input("시뮬레이션 횟수 (n)", min_value=1, max_value=10000, value=100, step=10)
+            n_simulations = st.number_input("데이터 생성 수 (n)", min_value=1, max_value=10000, value=100, step=10)
 
         # 4. 생성하기 버튼
-        if st.button("🚀 데이터 생성하기"):
-            with st.spinner('가상 데이터를 생성하는 중입니다...'):
+        if st.button("데이터 생성하기"):
+            with st.spinner('가상 데이터를 생성중...'):
                 # 3-sigma 규칙을 위한 표준편차 계산
                 # 상/하한 중 더 넓은 범위를 기준으로 가우시안 분포를 형성하고, 이후 Clipping으로 잘라냄
                 max_abs_error = max(upper_error, lower_error)
@@ -58,7 +58,7 @@ if uploaded_file is not None:
                     
                     virtual_data[i] = simulated_series
                 
-                st.success(f"🎉 {n_simulations}개의 가상 시계열 데이터가 생성되었습니다!")
+                st.success(f"※ {n_simulations}개의 가상 시계열 데이터가 생성되었습니다!")
                 
                 # # 시각화 (사용자가 결과를 눈으로 확인할 수 있도록 제공)
                 # st.subheader("📈 생성 결과 미리보기")
@@ -85,8 +85,8 @@ if uploaded_file is not None:
                 st.markdown("---")
                 csv = result_df.to_csv(index=False).encode('utf-8-sig') # 한글 깨짐 방지 인코딩
                 st.download_button(
-                    label="📥 결과 CSV 다운로드",
+                    label="↓ 결과 CSV 다운로드",
                     data=csv,
-                    file_name="virtual_samples.csv",
+                    file_name="New-samples_Noise.csv",
                     mime="text/csv"
                 )
