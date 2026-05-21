@@ -77,7 +77,7 @@ if uploaded_file is not None:
                 # st.pyplot(fig)
 
                 # 데이터프레임 변환
-                columns = [f'Sim_{i+1}' for i in range(n_simulations)]
+                columns = [f'Noise_{i+1}' for i in range(n_simulations)]
                 result_df = pd.DataFrame(virtual_data.T, columns=columns)
                 result_df.insert(0, 'Original_Data', base_data)
                 
